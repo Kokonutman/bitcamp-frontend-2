@@ -18,7 +18,7 @@ export function EmergencySupport() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       />
-      
+
       <div className="relative p-8 md:p-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -36,13 +36,14 @@ export function EmergencySupport() {
           </div>
 
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            Need immediate support? Our advanced AI crisis support system is available 24/7 
-            to provide instant, empathetic assistance. Our AI is specifically trained to help 
-            during difficult moments and can provide immediate coping strategies and support.
+            Need immediate support? Our advanced AI crisis support system is
+            available 24/7 to provide instant, empathetic assistance. Our AI is
+            specifically trained to help during difficult moments and can
+            provide immediate coping strategies and support.
           </p>
 
           <div className="space-y-4">
-            <Button 
+            <Button
               size="lg"
               onClick={handleCall}
               className="w-full md:w-auto px-8 bg-accent hover:bg-accent/90"
@@ -65,9 +66,10 @@ export function EmergencySupport() {
           </div>
 
           <p className="text-sm text-muted-foreground">
-            Our AI support system uses advanced natural language processing to provide 
-            immediate, personalized support. While it's not a replacement for professional 
-            medical care, it offers instant help when you need someone to talk to.
+            Our AI support system uses advanced natural language processing to
+            provide immediate, personalized support. While it&apos;s not a
+            replacement for professional medical care, it offers instant help
+            when you need someone to talk to.
           </p>
         </motion.div>
       </div>

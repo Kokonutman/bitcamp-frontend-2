@@ -20,7 +20,9 @@ export function GratitudeLog() {
 
   return (
     <Card className="p-6 glass-card animate-fade-in">
-      <h2 className="text-2xl font-semibold mb-4 text-foreground/90">Daily Gratitude</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-foreground/90">
+        Daily Gratitude
+      </h2>
       <div className="space-y-4">
         <div className="flex gap-2">
           <Input
@@ -40,7 +42,7 @@ export function GratitudeLog() {
             <Plus className="h-4 w-4" />
           </Button>
         </div>
-        
+
         <AnimatePresence>
           {entries.map((entry, index) => (
             <motion.div
@@ -58,7 +60,7 @@ export function GratitudeLog() {
 
         {entries.length === 0 && (
           <p className="text-center text-muted-foreground">
-            Add up to three things you're grateful for today
+            Add up to three things you&apos;re grateful for today
           </p>
         )}
       </div>
