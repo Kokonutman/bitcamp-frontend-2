@@ -49,7 +49,7 @@ export function EmergencySupport() {
               className="w-full md:w-auto px-8 bg-accent hover:bg-accent/90"
             >
               <Phone className="mr-2 h-5 w-5" />
-              Connect Now (1-800-662-4357)
+              +1 (947) 217 5415
             </Button>
 
             <ul className="space-y-2 text-muted-foreground">
