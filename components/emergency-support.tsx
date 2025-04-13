@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 
 export function EmergencySupport() {
   const handleCall = () => {
-    window.location.href = "tel:1-800-662-4357";
+    window.location.href = "tel:1-855-608-9948";
   };
 
   return (
