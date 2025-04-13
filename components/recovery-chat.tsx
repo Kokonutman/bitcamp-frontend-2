@@ -6,11 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Mic, Send, MessageCircle, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { sendMessage } from "@/lib/gemini";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+}
+
+// Add this above your component
+interface SpeechRecognitionEvent extends Event {
+  readonly results: SpeechRecognitionResultList;
 }
 
 export function RecoveryChat() {
@@ -24,48 +28,64 @@ export function RecoveryChat() {
   const [isListening, setIsListening] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const userId = "67fb3e569f78990e5e53ad33"; // Replace with actual user ID from session/auth later
+
+  const sendMessage = async (message: string): Promise<string> => {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: message, userId }),
+    });
+
+    const data = await res.json();
+    return data.response;
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage = input.trim();
     setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    setMessages((prev) => [...prev, { role: "user", content: userMessage }]);
     setIsLoading(true);
 
     try {
       const response = await sendMessage(userMessage);
-      setMessages(prev => [...prev, { role: "assistant", content: response }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: response },
+      ]);
     } catch (error) {
       console.error("Error getting response:", error);
-      setMessages(prev => [...prev, {
-        role: "assistant",
-        content: "I apologize, but I'm having trouble responding right now. If you need immediate support, please don't hesitate to use our emergency helpline."
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content:
+            "I apologize, but I'm having trouble responding right now. If you need immediate support, please don't hesitate to use our emergency helpline.",
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleVoiceInput = () => {
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      
-      recognition.onstart = () => {
-        setIsListening(true);
-      };
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        setInput(transcript);
-      };
+    if (!SpeechRecognition) return;
 
-      recognition.onend = () => {
-        setIsListening(false);
-      };
+    const recognition = new SpeechRecognition();
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+    };
+    recognition.onend = () => setIsListening(false);
 
-      recognition.start();
-    }
+    recognition.start();
   };
 
   return (
@@ -76,7 +96,7 @@ export function RecoveryChat() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       />
-      
+
       <div className="relative p-8 md:p-12 h-[600px] flex flex-col">
         <div className="flex items-center gap-4 mb-8">
           <div className="p-3 rounded-full bg-primary/20">
@@ -95,7 +115,9 @@ export function RecoveryChat() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                className={`flex ${
+                  message.role === "user" ? "justify-end" : "justify-start"
+                }`}
               >
                 <div
                   className={`max-w-[80%] p-4 rounded-2xl ${
@@ -104,11 +126,14 @@ export function RecoveryChat() {
                       : "bg-secondary/50 text-secondary-foreground"
                   }`}
                 >
-                  <p className="text-lg whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-lg whitespace-pre-wrap">
+                    {message.content}
+                  </p>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
+
           {isLoading && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -139,8 +164,8 @@ export function RecoveryChat() {
             className="bg-secondary/20"
             disabled={isLoading}
           />
-          <Button 
-            onClick={handleSend} 
+          <Button
+            onClick={handleSend}
             className="px-6"
             disabled={!input.trim() || isLoading}
           >
