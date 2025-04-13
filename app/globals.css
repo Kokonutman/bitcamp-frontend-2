@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 220 40% 98%;
+  --foreground: 224 71.4% 4.1%;
+  
+  --card: 220 40% 98%;
+  --card-foreground: 224 71.4% 4.1%;
+  
+  --popover: 220 40% 98%;
+  --popover-foreground: 224 71.4% 4.1%;
+  
+  --primary: 217 91% 60%;
+  --primary-foreground: 210 40% 98%;
+  
+  --secondary: 220 14.3% 95.9%;
+  --secondary-foreground: 220.9 39.3% 11%;
+  
+  --muted: 220 14.3% 95.9%;
+  --muted-foreground: 220 8.9% 46.1%;
+  
+  --accent: 221 83% 53%;
+  --accent-foreground: 210 40% 98%;
+  
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --ring: 224 71.4% 4.1%;
+
+  --radius: 1.5rem;
+}
+
+.dark {
+  --background: 224 71.4% 4.1%;
+  --foreground: 210 40% 98%;
+  
+  --card: 224 71.4% 4.1%;
+  --card-foreground: 210 40% 98%;
+  
+  --popover: 224 71.4% 4.1%;
+  --popover-foreground: 210 40% 98%;
+  
+  --primary: 217 91% 60%;
+  --primary-foreground: 210 40% 98%;
+  
+  --secondary: 215 27.9% 16.9%;
+  --secondary-foreground: 210 40% 98%;
+  
+  --muted: 215 27.9% 16.9%;
+  --muted-foreground: 217.9 10.6% 64.9%;
+  
+  --accent: 221 83% 53%;
+  --accent-foreground: 210 40% 98%;
+  
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  
+  --border: 215 27.9% 16.9%;
+  --input: 215 27.9% 16.9%;
+  --ring: 216 12.2% 83.9%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-gradient-to-br from-primary/5 via-background to-accent/5;
+    min-height: 100vh;
+    background-attachment: fixed;
+  }
+  h1 {
+    @apply font-heading text-5xl md:text-6xl font-bold tracking-tight;
+  }
+  h2 {
+    @apply font-heading text-3xl md:text-4xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply font-heading text-2xl font-medium;
+  }
+  .subtitle {
+    @apply text-lg md:text-xl text-muted-foreground font-light leading-relaxed;
+  }
+}
+
+.section-container {
+  @apply relative p-8 md:p-12 rounded-3xl transition-all duration-500
+         bg-gradient-to-br from-background/40 via-background/30 to-background/40 
+         backdrop-blur-md border-0;
+}
+
+.section-container::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 
+         rounded-3xl opacity-0 transition-opacity duration-500 -z-10;
+}
+
+.section-container:hover::before {
+  @apply opacity-100;
+}
+
+.section-title {
+  @apply flex items-center gap-3 text-2xl font-semibold mb-8 text-foreground/90 font-heading;
+}
+
+.section-title-icon {
+  @apply h-6 w-6 text-primary;
+}
+
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.7s ease-in;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.7s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.input-style {
+  @apply bg-background/50 backdrop-blur-sm border border-border/50 
+         focus:border-primary/50 transition-all duration-300
+         rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20
+         w-full text-lg;
+}
+
+.button-style {
+  @apply bg-primary/90 text-primary-foreground hover:bg-primary
+         transition-all duration-300 rounded-xl px-6 py-3
+         hover:scale-[1.02] active:scale-[0.98] text-lg font-medium
+         disabled:opacity-50 disabled:cursor-not-allowed
+         shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30;
+}
+
+.button-secondary {
+  @apply bg-secondary/80 hover:bg-secondary text-secondary-foreground 
+         backdrop-blur-sm border border-border/50 
+         transition-all duration-300 rounded-xl px-4 py-2
+         hover:scale-[1.02] active:scale-[0.98]
+         hover:border-primary/20 shadow-md hover:shadow-lg;
+}
+
+.chat-message {
+  @apply max-w-[80%] p-6 rounded-2xl text-lg;
+}
+
+.chat-message-user {
+  @apply bg-primary/20 text-primary-foreground ml-auto;
+}
+
+.chat-message-assistant {
+  @apply bg-secondary/20 text-secondary-foreground;
+}
+
+.progress-bar {
+  @apply h-3 rounded-full bg-secondary/30 overflow-hidden;
+}
+
+.progress-bar-fill {
+  @apply h-full bg-gradient-to-r from-primary/80 to-accent/80 
+         transition-all duration-300 ease-in-out;
+}
+
+.breathing-background {
+  @apply fixed inset-0 pointer-events-none overflow-hidden -z-10;
+}
+
+.breathing-background::before,
+.breathing-background::after {
+  content: '';
+  @apply absolute w-[800px] h-[800px] rounded-full opacity-30 blur-3xl;
+  animation: breathe 8s ease-in-out infinite alternate;
+}
+
+.breathing-background::before {
+  @apply bg-primary/10 -left-48 -top-48;
+  animation-delay: 0s;
+}
+
+.breathing-background::after {
+  @apply bg-accent/10 -right-48 -bottom-48;
+  animation-delay: -4s;
+}
+
+@keyframes breathe {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.2) translate(40px, 40px);
+  }
+}
+
+.glass-effect {
+  @apply backdrop-blur-lg bg-white/10 border border-white/20;
+}
+
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1;
+}
+
+.content-section {
+  @apply space-y-8 md:space-y-12;
+}
+
+.page-header {
+  @apply text-center space-y-4 mb-12;
+}
+
+.page-title {
+  @apply text-4xl md:text-5xl font-bold text-foreground/90 font-heading;
+}
+
+.page-subtitle {
+  @apply text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed;
+}
