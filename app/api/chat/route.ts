@@ -30,14 +30,38 @@ export async function POST(req: NextRequest) {
     });
 
     const user = await User.findById(userId);
+
     if (user) {
+      const name = user.name;
+      const startDate = user.sobrietyStartDate
+        ? new Date(user.sobrietyStartDate).toLocaleDateString()
+        : "an unknown date";
+
+      const substances = user.substances?.length
+        ? user.substances.join(", ")
+        : "no substances listed";
+
+      const reasons = user.reasonsForUse?.length
+        ? user.reasonsForUse.join(", ")
+        : "no specific reasons recorded";
+
+      const coping = user.copingStrategies?.length
+        ? user.copingStrategies.join(", ")
+        : "no coping strategies recorded";
+
+      const mood = user.mood || "unknown";
+
       contextMessages.unshift({
         role: "system",
-        content: `The user's name is ${
-          user.name
-        } and they have been sober since ${new Date(
-          user.sobrietyStartDate
-        ).toLocaleDateString()}.`,
+        content: `
+    You are speaking to ${name}, who has been sober since ${startDate}.
+    They are recovering from: ${substances}.
+    Common triggers for relapse include: ${reasons}.
+    Helpful coping strategies they have used in the past include: ${coping}.
+    Their current emotional state is: ${mood}.
+    
+    Use this knowledge to guide your reply, but do not repeat it verbatim.
+    `.trim(),
       });
     }
 
